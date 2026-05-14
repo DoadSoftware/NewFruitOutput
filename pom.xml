@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+     http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>NewFruitOutput</groupId>
+    <artifactId>NewFruitOutput</artifactId>
+    <version>2.3</version>
+    <packaging>war</packaging>
+
+    <properties>
+        <java.version>17</java.version>
+        <maven.compiler.release>17</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+
+		<!-- Custom library --> 
+		<dependency> 
+			<groupId>com.cricket</groupId> 
+			<artifactId>NewCricketLibrary</artifactId> 
+			<version>3.0</version> 
+		</dependency>
+
+		<dependency>
+		    <groupId>io.github.spannm</groupId>
+		    <artifactId>ucanaccess</artifactId>
+		    <version>5.1.3</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>jakarta.servlet.jsp.jstl</groupId>
+		    <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+		    <version>3.0.0</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.glassfish.web</groupId>
+		    <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+		    <version>3.0.1</version>
+		</dependency>
+
+        <!-- Servlet / Jakarta -->
+		<dependency>
+		    <groupId>jakarta.servlet.jsp</groupId>
+		    <artifactId>jakarta.servlet.jsp-api</artifactId>
+		    <version>3.1.1</version>
+		    <scope>provided</scope>
+		</dependency>  
+		      
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.transaction</groupId>
+            <artifactId>jakarta.transaction-api</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>4.0.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>4.0.5</version>
+        </dependency>
+
+        <!-- Spring 6 (all aligned) -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>6.1.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>6.1.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>6.1.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-expression</artifactId>
+            <version>6.1.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>6.1.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>6.1.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>6.1.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>6.1.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>6.1.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>6.1.8</version>
+        </dependency>
+
+        <!-- Hibernate 6 -->
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>6.5.2.Final</version>
+        </dependency>
+
+        <!-- Logging -->
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-simple</artifactId>
+		    <version>2.0.16</version>
+		</dependency>
+		
+		<!--Webjars-->
+		<dependency>
+		    <groupId>org.webjars</groupId>
+		    <artifactId>bootstrap</artifactId>
+		    <version>5.1.3</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.webjars</groupId>
+		    <artifactId>jquery</artifactId>
+		    <version>3.6.0</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.webjars</groupId>
+		    <artifactId>font-awesome</artifactId>
+		    <version>6.5.2</version>
+		</dependency>	
+		
+    </dependencies>
+
+    <build>
+
+        <sourceDirectory>src</sourceDirectory>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <release>17</release>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.4.0</version>
+                <configuration>
+                    <warSourceDirectory>WebContent</warSourceDirectory>
+                </configuration>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+</project>
