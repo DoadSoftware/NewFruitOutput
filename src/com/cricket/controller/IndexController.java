@@ -188,7 +188,7 @@ public class IndexController
 		}
 	}
 
-	@RequestMapping(value = {"/processCricketProcedures"}, method={RequestMethod.GET,RequestMethod.POST})    
+	@RequestMapping(value = {"/processCricketProcedures", "/processCricketProcedures.html"}, method={RequestMethod.GET,RequestMethod.POST})    
 	public @ResponseBody String processCricketProcedures(
 		@RequestParam(value = "whatToProcess", required = false, defaultValue = "") String whatToProcess,
 		@RequestParam(value = "valueToProcess", required = false, defaultValue = "") String valueToProcess) 
