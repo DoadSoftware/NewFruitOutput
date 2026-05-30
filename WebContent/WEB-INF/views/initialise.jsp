@@ -36,6 +36,17 @@
           <div class="card-body">
             <div id="initialise_div" style="display:none;">
 			  </div>
+			  <div class="form-group row row-bottom-margin ml-2" style="margin-bottom:0.8px;">
+			    <label for="Category" class="col-sm-4 col-form-label text-left">Select Category </label>
+			    <div class="col-sm-6 col-md-6">
+			      <select id="Category" name="Category" class="browser-default custom-select custom-select-sm"
+			      		onchange="processCricketProcedures('GET-CATEGORY-DATA')">
+			      		<option value=" "> </option>
+			      		<option value="MEN">MEN</option>
+			      		<option value="WOMEN">WOMEN</option>
+			      </select>
+			    </div>
+			  </div>
 			  <div class="row mb-2 ms-2 align-items-center" >
 			    <label for="select_configuration_file" class="col-sm-4 col-form-label text-start">Select Configuration </label>
 			    <div class="col-sm-6 col-md-6">

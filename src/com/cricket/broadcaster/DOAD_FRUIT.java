@@ -400,7 +400,7 @@ public class DOAD_FRUIT extends Scene{
 	    			}
 	    			
 	    		}else {
-	    			if(!match.getSetup().getTargetOvers().isEmpty() && Double.valueOf(match.getSetup().getTargetOvers()) == 1) {
+	    			if(match.getSetup().getTargetOvers() != null && !match.getSetup().getTargetOvers().isEmpty() && Double.valueOf(match.getSetup().getTargetOvers()) == 1) {
 				    	print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET vSelectPowerplay " + "0" + ";");
 				    }
 	    		}

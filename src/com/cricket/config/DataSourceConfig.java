@@ -1,5 +1,7 @@
 package com.cricket.config;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import javax.sql.DataSource;
 import org.hibernate.SessionFactory;
@@ -19,7 +21,25 @@ public class DataSourceConfig {
 	    DriverManagerDataSource dataSource = new DriverManagerDataSource();
 	    dataSource.setDriverClassName("net.ucanaccess.jdbc.UcanaccessDriver");
 	    dataSource.setUrl("jdbc:ucanaccess://C:/Sports/Cricket/Database/CricketTeams.mdb");
-	    return dataSource;
+	    
+	    DriverManagerDataSource men = new DriverManagerDataSource();
+	    men.setDriverClassName("net.ucanaccess.jdbc.UcanaccessDriver");
+	    men.setUrl("jdbc:ucanaccess://C:/Sports/CricketMen/Database/CricketTeams.mdb");
+        
+        DriverManagerDataSource women = new DriverManagerDataSource();
+        women.setDriverClassName("net.ucanaccess.jdbc.UcanaccessDriver");
+        women.setUrl("jdbc:ucanaccess://C:/Sports/CricketWomen/Database/CricketTeams.mdb");
+
+        Map<Object, Object> targetDataSources = new HashMap<>();
+        targetDataSources.put("LOCAL", dataSource);
+        targetDataSources.put("MEN", men);
+        targetDataSources.put("WOMEN", women);
+
+        RoutingDataSource routingDataSource = new RoutingDataSource();
+        routingDataSource.setTargetDataSources(targetDataSources);
+        routingDataSource.setDefaultTargetDataSource(dataSource);
+
+        return routingDataSource;
 	}
 
     @Bean

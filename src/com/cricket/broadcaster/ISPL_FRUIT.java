@@ -236,71 +236,73 @@ public class ISPL_FRUIT extends Scene{
 			
 			if(match.getSetup().getHomeSubstitutes() != null) {
 				for(Player hs : match.getSetup().getHomeSubstitutes()) {
-					if(!hs.getZone().equalsIgnoreCase("U19")) {
-						String zoneText = "";
-					    switch (hs.getZone().toUpperCase()) {
-					        case "NORTH ZONE": zoneText = "NZ"; break;
-					        case "EAST ZONE": zoneText = "EZ"; break;
-					        case "SOUTH ZONE": zoneText = "SZ"; break;
-					        case "WEST ZONE": zoneText = "WZ"; break;
-					        case "CENTRAL ZONE": zoneText = "CZ"; break;
+					if(hs.getZone() != null) {
+						if(!hs.getZone().equalsIgnoreCase("U19")) {
+							String zoneText = "";
+						    switch (hs.getZone().toUpperCase()) {
+						        case "NORTH ZONE": zoneText = "NZ"; break;
+						        case "EAST ZONE": zoneText = "EZ"; break;
+						        case "SOUTH ZONE": zoneText = "SZ"; break;
+						        case "WEST ZONE": zoneText = "WZ"; break;
+						        case "CENTRAL ZONE": zoneText = "CZ"; break;
+						        case "UNDER 19": zoneText = "U19"; break;
+						        default: zoneText = hs.getZone() ; break;
+						    }
+						    
+						    switch (hs.getZone().toUpperCase()) {
+					        case "NORTH": zoneText = "NZ"; break;
+					        case "EAST": zoneText = "EZ"; break;
+					        case "SOUTH": zoneText = "SZ"; break;
+					        case "WEST": zoneText = "WZ"; break;
+					        case "CENTRAL": zoneText = "CZ"; break;
 					        case "UNDER 19": zoneText = "U19"; break;
 					        default: zoneText = hs.getZone() ; break;
-					    }
-					    
-					    switch (hs.getZone().toUpperCase()) {
-				        case "NORTH": zoneText = "NZ"; break;
-				        case "EAST": zoneText = "EZ"; break;
-				        case "SOUTH": zoneText = "SZ"; break;
-				        case "WEST": zoneText = "WZ"; break;
-				        case "CENTRAL": zoneText = "CZ"; break;
-				        case "UNDER 19": zoneText = "U19"; break;
-				        default: zoneText = hs.getZone() ; break;
-					    }
-						print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET tMainHomeSubPlayer" + (s+1) + " " + 
-								 hs.getFull_name() + "("+ zoneText +");"); 
-						 if(hs.getRole().toUpperCase().equalsIgnoreCase("BATSMAN")) {
-								if(hs.getBattingStyle().equalsIgnoreCase("RHB")) {
-									print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainHomeSubRole" + (s+1) + " " + icon_path  + "Batsman"+CricketUtil.PNG_EXTENSION  + ";");
-								}else if(hs.getBattingStyle().equalsIgnoreCase("LHB")) {
-									print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainHomeSubRole" + (s+1) + " " + icon_path  + "LeftHandBatsman"+CricketUtil.PNG_EXTENSION  + ";");
-								}
-							}else if(hs.getRole().toUpperCase().equalsIgnoreCase("BAT/KEEPER")||hs.getRole().toUpperCase().equalsIgnoreCase("WICKET-KEEPER")) {
-								if(hs.getBattingStyle().equalsIgnoreCase("RHB")) {
-									print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainHomeSubRole" + (s+1) + " " + icon_path  + "Batsman"+CricketUtil.PNG_EXTENSION  + ";");
-								}else if(hs.getBattingStyle().equalsIgnoreCase("LHB")) {
-									print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainHomeSubRole" + (s+1) + " " + icon_path  + "LeftHandBatsman" +CricketUtil.PNG_EXTENSION + ";");
-								}
-							}else if(hs.getRole().toUpperCase().equalsIgnoreCase("BOWLER")) {
-								if(hs.getBowlingStyle() == null) {
-									print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainHomeSubRole" + (s+1) + " " + icon_path  + "FastBowler"+CricketUtil.PNG_EXTENSION  + ";");
-								}else {
-									switch(hs.getBowlingStyle()) {
-									case "RF": case "RFM": case "RMF": case "RM": case "RSM": case "LF": case "LFM": case "LMF": case "LM":
+						    }
+							print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET tMainHomeSubPlayer" + (s+1) + " " + 
+									 hs.getFull_name() + "("+ zoneText +");"); 
+							 if(hs.getRole().toUpperCase().equalsIgnoreCase("BATSMAN")) {
+									if(hs.getBattingStyle().equalsIgnoreCase("RHB")) {
+										print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainHomeSubRole" + (s+1) + " " + icon_path  + "Batsman"+CricketUtil.PNG_EXTENSION  + ";");
+									}else if(hs.getBattingStyle().equalsIgnoreCase("LHB")) {
+										print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainHomeSubRole" + (s+1) + " " + icon_path  + "LeftHandBatsman"+CricketUtil.PNG_EXTENSION  + ";");
+									}
+								}else if(hs.getRole().toUpperCase().equalsIgnoreCase("BAT/KEEPER")||hs.getRole().toUpperCase().equalsIgnoreCase("WICKET-KEEPER")) {
+									if(hs.getBattingStyle().equalsIgnoreCase("RHB")) {
+										print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainHomeSubRole" + (s+1) + " " + icon_path  + "Batsman"+CricketUtil.PNG_EXTENSION  + ";");
+									}else if(hs.getBattingStyle().equalsIgnoreCase("LHB")) {
+										print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainHomeSubRole" + (s+1) + " " + icon_path  + "LeftHandBatsman" +CricketUtil.PNG_EXTENSION + ";");
+									}
+								}else if(hs.getRole().toUpperCase().equalsIgnoreCase("BOWLER")) {
+									if(hs.getBowlingStyle() == null) {
 										print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainHomeSubRole" + (s+1) + " " + icon_path  + "FastBowler"+CricketUtil.PNG_EXTENSION  + ";");
-										break;
-									case "ROB": case "RLB": case "LSL": case "WSL": case "LCH": case "RLG": case "WSR": case "LSO":
-										print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainHomeSubRole" + (s+1) + " " + icon_path  + "SpinBowlerIcon" +CricketUtil.PNG_EXTENSION + ";");
-										break;
+									}else {
+										switch(hs.getBowlingStyle()) {
+										case "RF": case "RFM": case "RMF": case "RM": case "RSM": case "LF": case "LFM": case "LMF": case "LM":
+											print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainHomeSubRole" + (s+1) + " " + icon_path  + "FastBowler"+CricketUtil.PNG_EXTENSION  + ";");
+											break;
+										case "ROB": case "RLB": case "LSL": case "WSL": case "LCH": case "RLG": case "WSR": case "LSO":
+											print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainHomeSubRole" + (s+1) + " " + icon_path  + "SpinBowlerIcon" +CricketUtil.PNG_EXTENSION + ";");
+											break;
+										}
+									}
+								}else if(hs.getRole().toUpperCase().equalsIgnoreCase("ALL-ROUNDER")||hs.getRole().toUpperCase().contains("ALLROUNDER")) {
+									if(hs.getBowlingStyle() == null) {
+										print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainHomeSubRole" + (s+1) + " " + icon_path  + "FastBowlerAllrounder"+CricketUtil.PNG_EXTENSION  + ";");
+									}else {
+										switch(hs.getBowlingStyle()) {
+										case "RF": case "RFM": case "RMF": case "RM": case "RSM": case "LF": case "LFM": case "LMF": case "LM":
+											print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainHomeSubRole" + (s+1) + " " + icon_path  + "FastBowlerAllrounder" +CricketUtil.PNG_EXTENSION + ";");
+											break;
+										case "ROB": case "RLB": case "LSL": case "WSL": case "LCH": case "RLG": case "WSR": case "LSO":
+											print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainHomeSubRole" + (s+1) + " " + icon_path  + "SpinBowlerAllrounder"+CricketUtil.PNG_EXTENSION  + ";");
+											break;
+										}
 									}
 								}
-							}else if(hs.getRole().toUpperCase().equalsIgnoreCase("ALL-ROUNDER")||hs.getRole().toUpperCase().contains("ALLROUNDER")) {
-								if(hs.getBowlingStyle() == null) {
-									print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainHomeSubRole" + (s+1) + " " + icon_path  + "FastBowlerAllrounder"+CricketUtil.PNG_EXTENSION  + ";");
-								}else {
-									switch(hs.getBowlingStyle()) {
-									case "RF": case "RFM": case "RMF": case "RM": case "RSM": case "LF": case "LFM": case "LMF": case "LM":
-										print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainHomeSubRole" + (s+1) + " " + icon_path  + "FastBowlerAllrounder" +CricketUtil.PNG_EXTENSION + ";");
-										break;
-									case "ROB": case "RLB": case "LSL": case "WSL": case "LCH": case "RLG": case "WSR": case "LSO":
-										print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainHomeSubRole" + (s+1) + " " + icon_path  + "SpinBowlerAllrounder"+CricketUtil.PNG_EXTENSION  + ";");
-										break;
-									}
-								}
-							}
-						  print_writer.println("LAYER1*EVEREST*TREEVIEW*Main$All$Slect_Page$TeamPage$TeamsGrp$Style2$HomeGrp$HomeSubPlayerGrp$PlayerGrp"+(s+1)+"*FUNCTION*CONTAINER SET ACTIVE 1 ;");
-			   			 s++;
-					} 
+							  print_writer.println("LAYER1*EVEREST*TREEVIEW*Main$All$Slect_Page$TeamPage$TeamsGrp$Style2$HomeGrp$HomeSubPlayerGrp$PlayerGrp"+(s+1)+"*FUNCTION*CONTAINER SET ACTIVE 1 ;");
+				   			 s++;
+						} 
+					}
 				}
 			}
 			
@@ -382,70 +384,72 @@ public class ISPL_FRUIT extends Scene{
 			
 			if(match.getSetup().getAwaySubstitutes() != null) {
 				for(Player hs : match.getSetup().getAwaySubstitutes()) {
-					if(!hs.getZone().equalsIgnoreCase("U19")) {
-						String zoneText = "";
-					    switch (hs.getZone().toUpperCase()) {
-					        case "NORTH ZONE": zoneText = "NZ"; break;
-					        case "EAST ZONE": zoneText = "EZ"; break;
-					        case "SOUTH ZONE": zoneText = "SZ"; break;
-					        case "WEST ZONE": zoneText = "WZ"; break;
-					        case "CENTRAL ZONE": zoneText = "CZ"; break;
+					if(hs.getZone() != null) {
+						if(!hs.getZone().equalsIgnoreCase("U19")) {
+							String zoneText = "";
+						    switch (hs.getZone().toUpperCase()) {
+						        case "NORTH ZONE": zoneText = "NZ"; break;
+						        case "EAST ZONE": zoneText = "EZ"; break;
+						        case "SOUTH ZONE": zoneText = "SZ"; break;
+						        case "WEST ZONE": zoneText = "WZ"; break;
+						        case "CENTRAL ZONE": zoneText = "CZ"; break;
+						        case "UNDER 19": zoneText = "U19"; break;
+						        default: zoneText = hs.getZone() ; break;
+						    }
+						    
+						    switch (hs.getZone().toUpperCase()) {
+					        case "NORTH": zoneText = "NZ"; break;
+					        case "EAST": zoneText = "EZ"; break;
+					        case "SOUTH": zoneText = "SZ"; break;
+					        case "WEST": zoneText = "WZ"; break;
+					        case "CENTRAL": zoneText = "CZ"; break;
 					        case "UNDER 19": zoneText = "U19"; break;
 					        default: zoneText = hs.getZone() ; break;
-					    }
-					    
-					    switch (hs.getZone().toUpperCase()) {
-				        case "NORTH": zoneText = "NZ"; break;
-				        case "EAST": zoneText = "EZ"; break;
-				        case "SOUTH": zoneText = "SZ"; break;
-				        case "WEST": zoneText = "WZ"; break;
-				        case "CENTRAL": zoneText = "CZ"; break;
-				        case "UNDER 19": zoneText = "U19"; break;
-				        default: zoneText = hs.getZone() ; break;
-					    }
-					    print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET tMainAwaySubPlayer" + (bi+1) + " " + 
-								 hs.getFull_name() + "(" + zoneText + ");"); 
-						 if(hs.getRole().toUpperCase().equalsIgnoreCase("BATSMAN")) {
-								if(hs.getBattingStyle().equalsIgnoreCase("RHB")) {
-									print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainAwaySubRole" + (bi+1) + " " + icon_path  + "Batsman"+CricketUtil.PNG_EXTENSION  + ";");
-								}else if(hs.getBattingStyle().equalsIgnoreCase("LHB")) {
-									print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainAwaySubRole" + (bi+1) + " " + icon_path  + "LeftHandBatsman"+CricketUtil.PNG_EXTENSION  + ";");
-								}
-							}else if(hs.getRole().toUpperCase().equalsIgnoreCase("BAT/KEEPER")||hs.getRole().toUpperCase().equalsIgnoreCase("WICKET-KEEPER")) {
-								if(hs.getBattingStyle().equalsIgnoreCase("RHB")) {
-									print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainAwaySubRole" + (bi+1) + " " + icon_path  + "Batsman" +CricketUtil.PNG_EXTENSION + ";");
-								}else if(hs.getBattingStyle().equalsIgnoreCase("LHB")) {
-									print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainAwaySubRole" + (bi+1) + " " + icon_path  + "LeftHandBatsman"+CricketUtil.PNG_EXTENSION  + ";");
-								}
-							}else if(hs.getRole().toUpperCase().equalsIgnoreCase("BOWLER")) {
-								if(hs.getBowlingStyle() == null) {
-									print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainAwaySubRole" + (bi+1) + " " + icon_path  + "FastBowler"+CricketUtil.PNG_EXTENSION  + ";");
-								}else {
-									switch(hs.getBowlingStyle()) {
-									case "RF": case "RFM": case "RMF": case "RM": case "RSM": case "LF": case "LFM": case "LMF": case "LM":
-										print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainAwaySubRole" + (bi+1) + " " + icon_path  + "FastBowler" +CricketUtil.PNG_EXTENSION + ";");
-										break;
-									case "ROB": case "RLB": case "LSL": case "WSL": case "LCH": case "RLG": case "WSR": case "LSO":
-										print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainAwaySubRole" + (bi+1) + " " + icon_path  + "SpinBowlerIcon"+CricketUtil.PNG_EXTENSION  + ";");
-										break;
+						    }
+						    print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET tMainAwaySubPlayer" + (bi+1) + " " + 
+									 hs.getFull_name() + "(" + zoneText + ");"); 
+							 if(hs.getRole().toUpperCase().equalsIgnoreCase("BATSMAN")) {
+									if(hs.getBattingStyle().equalsIgnoreCase("RHB")) {
+										print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainAwaySubRole" + (bi+1) + " " + icon_path  + "Batsman"+CricketUtil.PNG_EXTENSION  + ";");
+									}else if(hs.getBattingStyle().equalsIgnoreCase("LHB")) {
+										print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainAwaySubRole" + (bi+1) + " " + icon_path  + "LeftHandBatsman"+CricketUtil.PNG_EXTENSION  + ";");
+									}
+								}else if(hs.getRole().toUpperCase().equalsIgnoreCase("BAT/KEEPER")||hs.getRole().toUpperCase().equalsIgnoreCase("WICKET-KEEPER")) {
+									if(hs.getBattingStyle().equalsIgnoreCase("RHB")) {
+										print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainAwaySubRole" + (bi+1) + " " + icon_path  + "Batsman" +CricketUtil.PNG_EXTENSION + ";");
+									}else if(hs.getBattingStyle().equalsIgnoreCase("LHB")) {
+										print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainAwaySubRole" + (bi+1) + " " + icon_path  + "LeftHandBatsman"+CricketUtil.PNG_EXTENSION  + ";");
+									}
+								}else if(hs.getRole().toUpperCase().equalsIgnoreCase("BOWLER")) {
+									if(hs.getBowlingStyle() == null) {
+										print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainAwaySubRole" + (bi+1) + " " + icon_path  + "FastBowler"+CricketUtil.PNG_EXTENSION  + ";");
+									}else {
+										switch(hs.getBowlingStyle()) {
+										case "RF": case "RFM": case "RMF": case "RM": case "RSM": case "LF": case "LFM": case "LMF": case "LM":
+											print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainAwaySubRole" + (bi+1) + " " + icon_path  + "FastBowler" +CricketUtil.PNG_EXTENSION + ";");
+											break;
+										case "ROB": case "RLB": case "LSL": case "WSL": case "LCH": case "RLG": case "WSR": case "LSO":
+											print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainAwaySubRole" + (bi+1) + " " + icon_path  + "SpinBowlerIcon"+CricketUtil.PNG_EXTENSION  + ";");
+											break;
+										}
+									}
+								}else if(hs.getRole().toUpperCase().equalsIgnoreCase("ALL-ROUNDER")) {
+									if(hs.getBowlingStyle() == null) {
+										print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainAwaySubRole" + (bi+1) + " " + icon_path  + "FastBowlerAllrounder"+CricketUtil.PNG_EXTENSION  + ";");
+									}else {
+										switch(hs.getBowlingStyle()) {
+										case "RF": case "RFM": case "RMF": case "RM": case "RSM": case "LF": case "LFM": case "LMF": case "LM":
+											print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainAwaySubRole" + (bi+1) + " " + icon_path  + "FastBowlerAllrounder" +CricketUtil.PNG_EXTENSION + ";");
+											break;
+										case "ROB": case "RLB": case "LSL": case "WSL": case "LCH": case "RLG": case "WSR": case "LSO":
+											print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainAwaySubRole" + (bi+1) + " " + icon_path  + "SpinBowlerAllrounder"+CricketUtil.PNG_EXTENSION + ";");
+											break;
+										}
 									}
 								}
-							}else if(hs.getRole().toUpperCase().equalsIgnoreCase("ALL-ROUNDER")) {
-								if(hs.getBowlingStyle() == null) {
-									print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainAwaySubRole" + (bi+1) + " " + icon_path  + "FastBowlerAllrounder"+CricketUtil.PNG_EXTENSION  + ";");
-								}else {
-									switch(hs.getBowlingStyle()) {
-									case "RF": case "RFM": case "RMF": case "RM": case "RSM": case "LF": case "LFM": case "LMF": case "LM":
-										print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainAwaySubRole" + (bi+1) + " " + icon_path  + "FastBowlerAllrounder" +CricketUtil.PNG_EXTENSION + ";");
-										break;
-									case "ROB": case "RLB": case "LSL": case "WSL": case "LCH": case "RLG": case "WSR": case "LSO":
-										print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET lgMainAwaySubRole" + (bi+1) + " " + icon_path  + "SpinBowlerAllrounder"+CricketUtil.PNG_EXTENSION + ";");
-										break;
-									}
-								}
-							}
-						  print_writer.println("LAYER1*EVEREST*TREEVIEW*Main$All$Slect_Page$TeamPage$TeamsGrp$Style2$AwayGrp$AwaySubPlayerGrp$PlayerGrp"+(bi+1)+"*FUNCTION*CONTAINER SET ACTIVE 1 ;");
-						 bi++;
+							  print_writer.println("LAYER1*EVEREST*TREEVIEW*Main$All$Slect_Page$TeamPage$TeamsGrp$Style2$AwayGrp$AwaySubPlayerGrp$PlayerGrp"+(bi+1)+"*FUNCTION*CONTAINER SET ACTIVE 1 ;");
+							 bi++;
+						}
 					}
 				}
 			}

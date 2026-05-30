@@ -7,7 +7,10 @@ import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cricket.broadcaster.DOAD_FRUIT;
 import com.cricket.broadcaster.ISPL_FRUIT;
 import com.cricket.broadcaster.LCT_FRUIT;
+import com.cricket.config.DatabaseContextHolder;
 import com.cricket.containers.Scene;
 import com.cricket.model.Configuration;
 import com.cricket.model.Ground;
@@ -56,6 +60,7 @@ public class IndexController
 	public static List<Team> session_teams = new ArrayList<Team>();
 	public static List<Ground> session_grounds = new ArrayList<Ground>();
 	public static ObjectMapper objectMapper = new ObjectMapper();  
+	public static String basePath = "";
 	
 	@RequestMapping(value = {"/","/initialise"}, method={RequestMethod.GET,RequestMethod.POST}) 
 	public String initialisePage(ModelMap model) throws MalformedURLException, IOException
@@ -83,6 +88,7 @@ public class IndexController
 
 		model.addAttribute("session_configuration",session_configuration);
 		model.addAttribute("session_selected_scenes",session_selected_scenes);
+		DatabaseContextHolder.setDb("LOCAL");
 		return "initialise";
 	}
 
@@ -98,7 +104,8 @@ public class IndexController
 			@RequestParam(value = "showSubs", required = false, defaultValue = "") String showSubs,
 			@RequestParam(value = "select_cricket_matches", required = false, defaultValue = "") String selectedMatch,
 			@RequestParam(value = "vizIPAddress", required = false, defaultValue = "") String vizIPAddress,
-			@RequestParam(value = "vizPortNumber", required = false, defaultValue = "") int vizPortNumber) 
+			@RequestParam(value = "vizPortNumber", required = false, defaultValue = "") int vizPortNumber,
+			 @RequestParam(value = "Category", required = false, defaultValue = "") String Category) 
 					throws Exception 
 	{
 		if(current_date == null || current_date.isEmpty()) {
@@ -112,8 +119,16 @@ public class IndexController
 			return "error";
 			
 		}else {
+			basePath = CricketUtil.CRICKET_DIRECTORY;
+			if(Category.equalsIgnoreCase("men")) {
+				basePath = "C:\\Sports\\CricketMen\\";
+		    	DatabaseContextHolder.setDb("MEN");
+			}else if(Category.equalsIgnoreCase("women")) {
+				basePath = "C:\\Sports\\CricketWomen\\";
+		    	DatabaseContextHolder.setDb("WOMEN");
+			}
 		
-			last_match_time_stamp = new File(CricketUtil.CRICKET_DIRECTORY + CricketUtil.MATCHES_DIRECTORY 
+			last_match_time_stamp = new File(basePath + CricketUtil.MATCHES_DIRECTORY 
 				+ selectedMatch).lastModified();
 			
 			session_configuration = new Configuration(selectedMatch, select_broadcaster, speed_select, "", "", 
@@ -127,12 +142,12 @@ public class IndexController
 			session_grounds = cricketService.getGrounds();
 
 			session_match = new MatchAllData();
-			session_match.setMatch(new ObjectMapper().readValue(new File(CricketUtil.CRICKET_DIRECTORY + 
+			session_match.setMatch(new ObjectMapper().readValue(new File(basePath + 
 				CricketUtil.MATCHES_DIRECTORY + selectedMatch), Match.class));
 			
 			session_match.getMatch().setMatchFileName(selectedMatch);
 			session_match = CricketFunctions.populateMatchVariables(CricketFunctions.readOrSaveMatchFile(CricketUtil.READ,
-				CricketUtil.SETUP + "," + CricketUtil.MATCH + "," + CricketUtil.EVENT, session_match, session_configuration), 
+				CricketUtil.SETUP + "," + CricketUtil.MATCH + "," + CricketUtil.EVENT, session_match, session_configuration, basePath), 
 				session_players, session_teams, session_grounds);
 			session_match.getSetup().setMatchFileTimeStamp(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()));
 			
@@ -179,8 +194,8 @@ public class IndexController
 					lastSpeed.setSpeedFileModifiedTime(new File("C:/Sports/Cricket/VE/VR-Speed.txt").lastModified());
 				}	
 			}else {
-				if(new File(CricketUtil.CRICKET_DIRECTORY + CricketUtil.SPEED_DIRECTORY + CricketUtil.SPEED_TXT).exists()) {
-					lastSpeed.setSpeedFileModifiedTime(new File(CricketUtil.CRICKET_DIRECTORY + CricketUtil.SPEED_DIRECTORY 
+				if(new File(basePath + CricketUtil.SPEED_DIRECTORY + CricketUtil.SPEED_TXT).exists()) {
+					lastSpeed.setSpeedFileModifiedTime(new File(basePath + CricketUtil.SPEED_DIRECTORY 
 							+ CricketUtil.SPEED_TXT).lastModified());
 				}
 			}
@@ -198,6 +213,32 @@ public class IndexController
 		Review this_review =  new Review();
 		
 		switch (whatToProcess.toUpperCase()) {
+		case "GET-CATEGORY-DATA":
+		    String category = valueToProcess.trim().toLowerCase(); // "men" or "women"
+
+		    File matchDir;
+		    if (category.equalsIgnoreCase("men")) {
+		        matchDir = new File("C:\\Sports\\CricketMen\\Matches\\");
+		        DatabaseContextHolder.setDb("MEN");
+		    } else if (category.equalsIgnoreCase("women")) {
+		        matchDir = new File("C:\\Sports\\CricketWomen\\Matches\\");
+		        DatabaseContextHolder.setDb("WOMEN");
+		    } else {
+		        matchDir = new File(CricketUtil.CRICKET_SERVER_DIRECTORY + CricketUtil.MATCHES_DIRECTORY);
+		    }
+
+		    File[] files = matchDir.listFiles(f -> f.isFile() && f.getName().toLowerCase().endsWith(".json"));
+		    List<String> matchNames = new ArrayList<>();
+		    if (files != null) {
+		        for (File f : files) {
+		            matchNames.add(f.getName());
+		        }
+		    }
+
+		    Map<String, Object> response = new HashMap<>();
+		    response.put("configuration", session_configuration);
+		    response.put("matchFiles", matchNames);
+		    return objectMapper.writeValueAsString(response);
 		case "GET-CONFIG-DATA":
 
 			session_configuration = (Configuration)JAXBContext.newInstance(Configuration.class).createUnmarshaller().unmarshal(
@@ -208,7 +249,7 @@ public class IndexController
 		case "RE_READ_DATA":
 			
 			session_match = CricketFunctions.populateMatchVariables(CricketFunctions.readOrSaveMatchFile(CricketUtil.READ,
-				CricketUtil.SETUP + "," + CricketUtil.MATCH + "," + CricketUtil.EVENT, session_match, session_configuration), 
+				CricketUtil.SETUP + "," + CricketUtil.MATCH + "," + CricketUtil.EVENT, session_match, session_configuration, basePath), 
 				session_players, session_teams, session_grounds);
 			return objectMapper.writeValueAsString(session_match);
 		
@@ -219,23 +260,23 @@ public class IndexController
 						session_match.getSetup().getMatchType().equalsIgnoreCase("FC")) {
 					this_fruit.Time(CricketFunctions.processPrintWriter(session_configuration).get(0));
 				}
-				if(session_match.getMatch() != null && last_match_time_stamp != new File(CricketUtil.CRICKET_DIRECTORY 
+				if(session_match.getMatch() != null && last_match_time_stamp != new File(basePath 
 					+ CricketUtil.MATCHES_DIRECTORY + session_match.getMatch().getMatchFileName()).lastModified()) {
 					
 					session_match = CricketFunctions.populateMatchVariables(CricketFunctions.readOrSaveMatchFile(CricketUtil.READ,
-						CricketUtil.SETUP + "," + CricketUtil.MATCH + "," + CricketUtil.EVENT, session_match, session_configuration), 
+						CricketUtil.SETUP + "," + CricketUtil.MATCH + "," + CricketUtil.EVENT, session_match, session_configuration, basePath), 
 						session_players, session_teams, session_grounds);
 
 					if(!session_configuration.getPrimaryIpAddress().isEmpty()) {
 						this_fruit.updateFruit(session_selected_scenes.get(0), 
 						session_match,CricketFunctions.processPrintWriter(session_configuration).get(0),session_configuration);
 					}
-					last_match_time_stamp = new File(CricketUtil.CRICKET_DIRECTORY + CricketUtil.MATCHES_DIRECTORY 
+					last_match_time_stamp = new File(basePath + CricketUtil.MATCHES_DIRECTORY 
 						+ session_match.getMatch().getMatchFileName()).lastModified();
 				}
 
 				if(!session_configuration.getPrimaryIpAddress().isEmpty()) {
-					this_speed = CricketFunctions.getCurrentSpeed(CricketUtil.CRICKET_DIRECTORY 
+					this_speed = CricketFunctions.getCurrentSpeed(basePath 
 							+ CricketUtil.SPEED_DIRECTORY + CricketUtil.SPEED_TXT, lastSpeed);
 					if(this_speed != null) {
 						this_fruit.populateSpeed(CricketFunctions.processPrintWriter(session_configuration).get(0),this_speed);
@@ -252,11 +293,11 @@ public class IndexController
 			
 			case CricketUtil.ISPL_FRUIT: 
 				
-				if(session_match.getMatch() != null && last_match_time_stamp != new File(CricketUtil.CRICKET_DIRECTORY 
+				if(session_match.getMatch() != null && last_match_time_stamp != new File(basePath
 					+ CricketUtil.MATCHES_DIRECTORY + session_match.getMatch().getMatchFileName()).lastModified()) {
 					
 					session_match = CricketFunctions.populateMatchVariables(CricketFunctions.readOrSaveMatchFile(CricketUtil.READ,
-						CricketUtil.SETUP + "," + CricketUtil.MATCH + "," + CricketUtil.EVENT, session_match, session_configuration), 
+						CricketUtil.SETUP + "," + CricketUtil.MATCH + "," + CricketUtil.EVENT, session_match, session_configuration, basePath), 
 						session_players, session_teams, session_grounds);
 					
 					//CricketFunctions.getInteractive(session_match,"FULL_WRITE");
@@ -265,7 +306,7 @@ public class IndexController
 						this_ispl_fruit.updateFruit(session_selected_scenes.get(0), 
 						session_match,CricketFunctions.processPrintWriter(session_configuration).get(0),session_configuration);
 					}
-					last_match_time_stamp = new File(CricketUtil.CRICKET_DIRECTORY + CricketUtil.MATCHES_DIRECTORY 
+					last_match_time_stamp = new File(basePath + CricketUtil.MATCHES_DIRECTORY 
 						+ session_match.getMatch().getMatchFileName()).lastModified();
 				}
 
@@ -284,24 +325,24 @@ public class IndexController
 				}
 				break;
 			case "LCT_FRUIT":
-				if(session_match.getMatch() != null && last_match_time_stamp != new File(CricketUtil.CRICKET_DIRECTORY 
+				if(session_match.getMatch() != null && last_match_time_stamp != new File(basePath 
 						+ CricketUtil.MATCHES_DIRECTORY + session_match.getMatch().getMatchFileName()).lastModified()) {
 						
 						session_match = CricketFunctions.populateMatchVariables(CricketFunctions.readOrSaveMatchFile(CricketUtil.READ,
-							CricketUtil.SETUP + "," + CricketUtil.MATCH + "," + CricketUtil.EVENT, session_match, session_configuration), 
+							CricketUtil.SETUP + "," + CricketUtil.MATCH + "," + CricketUtil.EVENT, session_match, session_configuration, basePath), 
 							session_players, session_teams, session_grounds);
 					
 						if(!session_configuration.getPrimaryIpAddress().isEmpty()) {
 							this_fruit_lct.updateFruit(session_selected_scenes.get(0), 
 							session_match,CricketFunctions.processPrintWriter(session_configuration).get(0),session_configuration);
 						}
-						last_match_time_stamp = new File(CricketUtil.CRICKET_DIRECTORY + CricketUtil.MATCHES_DIRECTORY 
+						last_match_time_stamp = new File(basePath + CricketUtil.MATCHES_DIRECTORY 
 							+ session_match.getMatch().getMatchFileName()).lastModified();
 					}
 
 					if(!session_configuration.getPrimaryIpAddress().isEmpty()) {
 						
-						this_speed = CricketFunctions.getCurrentSpeed(CricketUtil.CRICKET_DIRECTORY 
+						this_speed = CricketFunctions.getCurrentSpeed(basePath 
 								+ CricketUtil.SPEED_DIRECTORY + CricketUtil.SPEED_TXT, lastSpeed);
 						if(this_speed != null) {
 							this_fruit_lct.populateSpeed(CricketFunctions.processPrintWriter(session_configuration).get(0),this_speed);

@@ -162,6 +162,9 @@ function processCricketProcedures(whatToProcess)
 	var valueToProcess;
 	
 	switch(whatToProcess) {
+	case 'GET-CATEGORY-DATA':
+		valueToProcess = $('#Category option:selected').val();
+		break;
 	case 'GET-CONFIG-DATA':
 		valueToProcess = $('#select_configuration_file option:selected').val();
 		break;
@@ -190,6 +193,23 @@ function processCricketProcedures(whatToProcess)
         dataType : 'json',
         success : function(data) {
         	switch(whatToProcess) {
+			case 'GET-CATEGORY-DATA':
+			    var matchSelect = document.getElementById('select_cricket_matches');
+			    matchSelect.innerHTML = '';
+			    if (data.matchFiles && data.matchFiles.length > 0) {
+			        data.matchFiles.forEach(function(fileName) {
+			            var option = document.createElement('option');
+			            option.value = fileName;
+			            option.text = fileName;
+			            matchSelect.appendChild(option);
+			        });
+			    } else {
+			        var option = document.createElement('option');
+			        option.value = '';
+			        option.text = '-- No matches found --';
+			        matchSelect.appendChild(option);
+			    }
+			    break;
 			case 'GET-CONFIG-DATA':
 				initialiseForm('UPDATE-CONFIG',data);
 				break;
