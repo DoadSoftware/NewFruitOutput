@@ -1206,11 +1206,14 @@ public class DOAD_FRUIT extends Scene{
 						if(!match.getSetup().getMatchType().equalsIgnoreCase(CricketUtil.TEST)&& 
 								!match.getSetup().getMatchType().equalsIgnoreCase("FC")) {
 							/********************************LAST 30 BALLS*************************************************/
+							String last30BallsStats = CricketFunctions.getlastthirtyballsdata(match, "-",  match.getEventFile().getEvents(), 30);
 							if (((inn.getTotalOvers() * Integer.valueOf(match.getSetup().getBallsPerOver())) + inn.getTotalBalls()) >= 30)
 							{	
-								print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET tSmallFreeText2 " + "LAST 30 BALLS : " + 
-										Stats.getLastThirtyBalls().getTotalRuns() + " RUN" + CricketFunctions.Plural(Stats.getLastThirtyBalls().getTotalRuns()).toUpperCase() + " , " + Stats.getLastThirtyBalls().getTotalWickets() +
-										" WICKET" + CricketFunctions.Plural(Stats.getLastThirtyBalls().getTotalWickets()).toUpperCase()+ ";");
+								String[] last30 = CricketFunctions.getlastthirtyballsdata( match,  "-",  match.getEventFile().getEvents(),  30).split("-");
+
+									print_writer.println("LAYER1*EVEREST*TREEVIEW*Main*FUNCTION*TAG_CONTROL SET tSmallFreeText2 " + "LAST 30 BALLS : " 
+									+ last30[0] + " RUN" + CricketFunctions.Plural(Integer.parseInt(last30[0])).toUpperCase() + " , " + last30[1] 
+											+ " WICKET" + CricketFunctions.Plural(Integer.parseInt(last30[1])).toUpperCase() + ";");
 							}else {
 								/********************************LastOverRunWicket*************************************************/
 								if(inn.getTotalOvers() > 0) {
